@@ -1,18 +1,21 @@
 <template>
   <form @submit.prevent="submitForm">
-    <div class="form-control">
+    <div class="form-control" :class="{invalid: usernameValidity === 'invalid'}">
       <label for="user-name">Your Name</label>
-      <input id="user-name" name="user-name" type="text" v-model="userName" />
+      <input id="user-name" name="user-name" type="text" v-model.trim="userName" @blur="validateInput"/>
+      <p v-if="usernameValidity === 'invalid'">Please enter a valid name.</p>
     </div>
-    <div class="form-control">
+    <div class="form-control" :class="{invalid: ageValidity === 'invalid'}">
       <label for="age">Your Age (Years)</label>
       <input
         id="age"
         name="age"
         type="number"
         v-model="userAge"
-        ref="ageInput"
+        ref="ageInput" 
+        @blur="validateInput"
       />
+      <p v-if="ageValidity === 'invalid'">Please enter a valid age.</p>
     </div>
     <div class="form-control">
       <label for="referrer">How did you hear about us?</label>
@@ -72,6 +75,12 @@
     </div>
 
     <div class="form-control">
+      <rating-control v-model="rating">
+
+      </rating-control>
+    </div>
+
+    <div class="form-control">
       <input type="checkbox" name="confirm-terms" id="confirm-terms" v-model="confirm">
       <label for="confirm-terms">Agree to terms of use?</label>
     </div>
@@ -81,7 +90,11 @@
   </form>
 </template>
 <script>
+import RatingControl from './RatingControl.vue'
 export default {
+  components:{
+    RatingControl
+  },
   data() {
     return {
       userName: '',
@@ -89,7 +102,10 @@ export default {
       referrer: 'wom',
       interest: [],
       how: null,
-      confirm:false
+      confirm:false,
+      rating:null,
+      usernameValidity: 'pending',
+      ageValidity: 'pending'
     };
   },
   methods: {
@@ -109,9 +125,26 @@ export default {
       this.interest = [];
       this.how = null;
 
+      console.log('Rating:');
+      console.log(this.rating);
+      this.rating = null;
+
+      console.log('Confirm:');
       console.log(this.confirm);
       this.confirm = false;
     },
+    validateInput() {
+      if(this.userName === ''){
+        this.usernameValidity = 'invalid';
+      } else {
+        this.usernameValidity = 'valid';
+      }
+      if(this.$refs.ageInput.value <= 18 || this.$refs.ageInput.value === null){
+        this.ageValidity = 'invalid';
+      } else {
+        this.ageValidity = 'valid';
+      }
+    }
   },
 };
 </script>
@@ -171,6 +204,14 @@ button {
   cursor: pointer;
   padding: 0.75rem 2rem;
   border-radius: 30px;
+}
+
+.form-control.invalid input {
+  border-color: red;
+}
+
+.form-control.invalid label {
+  color: red;
 }
 
 button:hover,
