@@ -1,20 +1,13 @@
 <template>
   <form @submit.prevent="submitForm">
-    <div class="form-control" :class="{invalid: usernameValidity === 'invalid'}">
+    <div class="form-control" :class="{ invalid: usernameValidity === 'invalid' }">
       <label for="user-name">Your Name</label>
-      <input id="user-name" name="user-name" type="text" v-model.trim="userName" @blur="validateInput"/>
+      <input id="user-name" name="user-name" type="text" v-model.trim="userName" @blur="validateInput" />
       <p v-if="usernameValidity === 'invalid'">Please enter a valid name.</p>
     </div>
-    <div class="form-control" :class="{invalid: ageValidity === 'invalid'}">
+    <div class="form-control" :class="{ invalid: ageValidity === 'invalid' }">
       <label for="age">Your Age (Years)</label>
-      <input
-        id="age"
-        name="age"
-        type="number"
-        v-model="userAge"
-        ref="ageInput" 
-        @blur="validateInput"
-      />
+      <input id="age" name="age" type="number" v-model="userAge" ref="ageInput" @blur="validateInput" />
       <p v-if="ageValidity === 'invalid'">Please enter a valid age.</p>
     </div>
     <div class="form-control">
@@ -28,33 +21,15 @@
     <div class="form-control">
       <h2>What are you interested in?</h2>
       <div>
-        <input
-          id="interest-news"
-          name="interest"
-          type="checkbox"
-          value="news"
-          v-model="interest"
-        />
+        <input id="interest-news" name="interest" type="checkbox" value="news" v-model="interest" />
         <label for="interest-news">News</label>
       </div>
       <div>
-        <input
-          id="interest-tutorials"
-          name="interest"
-          type="checkbox"
-          value="tutorials"
-          v-model="interest"
-        />
+        <input id="interest-tutorials" name="interest" type="checkbox" value="tutorials" v-model="interest" />
         <label for="interest-tutorials">Tutorials</label>
       </div>
       <div>
-        <input
-          id="interest-nothing"
-          name="interest"
-          type="checkbox"
-          value="nothing"
-          v-model="interest"
-        />
+        <input id="interest-nothing" name="interest" type="checkbox" value="nothing" v-model="interest" />
         <label for="interest-nothing">Nothing</label>
       </div>
     </div>
@@ -75,13 +50,11 @@
     </div>
 
     <div class="form-control">
-      <rating-control v-model="rating">
-
-      </rating-control>
+      <rating-control v-model="rating"> </rating-control>
     </div>
 
     <div class="form-control">
-      <input type="checkbox" name="confirm-terms" id="confirm-terms" v-model="confirm">
+      <input type="checkbox" name="confirm-terms" id="confirm-terms" v-model="confirm" />
       <label for="confirm-terms">Agree to terms of use?</label>
     </div>
     <div>
@@ -90,10 +63,10 @@
   </form>
 </template>
 <script>
-import RatingControl from './RatingControl.vue'
+import RatingControl from './RatingControl.vue';
 export default {
-  components:{
-    RatingControl
+  components: {
+    RatingControl,
   },
   data() {
     return {
@@ -102,10 +75,10 @@ export default {
       referrer: 'wom',
       interest: [],
       how: null,
-      confirm:false,
-      rating:null,
+      confirm: false,
+      rating: null,
       usernameValidity: 'pending',
-      ageValidity: 'pending'
+      ageValidity: 'pending',
     };
   },
   methods: {
@@ -134,17 +107,20 @@ export default {
       this.confirm = false;
     },
     validateInput() {
-      if(this.userName === ''){
+      if (this.userName === '') {
         this.usernameValidity = 'invalid';
       } else {
         this.usernameValidity = 'valid';
       }
-      if(this.$refs.ageInput.value <= 18 || this.$refs.ageInput.value === null){
+      if (
+        this.$refs.ageInput.value <= 18 ||
+        this.$refs.ageInput.value === null
+      ) {
         this.ageValidity = 'invalid';
       } else {
         this.ageValidity = 'valid';
       }
-    }
+    },
   },
 };
 </script>
@@ -191,8 +167,8 @@ input[type='radio'] {
   margin-right: 1rem;
 }
 
-input[type='checkbox'] + label,
-input[type='radio'] + label {
+input[type='checkbox']+label,
+input[type='radio']+label {
   font-weight: normal;
 }
 
